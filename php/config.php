@@ -1,5 +1,5 @@
 <?php 
  
- $conn = mysqli_connect("127.0.0.1", "root", "", "tutorial") or die("Couldn't connect");
+ $con = mysqli_connect("mysql","root","root","tutorial") or die("Couldn't connect");
 
 ?>
