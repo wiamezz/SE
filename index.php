@@ -1,5 +1,27 @@
 <?php 
-   session_start();
+    session_start();
+
+    include("php/config.php");
+
+    if(isset($_POST['submit'])){
+        $email = mysqli_real_escape_string($con,$_POST['email']);
+        $password = mysqli_real_escape_string($con,$_POST['password']);
+
+        $result = mysqli_query($con,"SELECT * FROM users WHERE Email='$email' AND Password='$password' ") or die("Select Error");
+        $row = mysqli_fetch_assoc($result);
+
+        if(is_array($row) && !empty($row)){
+            $_SESSION['valid'] = $row['Email'];
+            $_SESSION['username'] = $row['Username'];
+            $_SESSION['age'] = $row['Age'];
+            $_SESSION['id'] = $row['Id'];
+            header("Location: home.php");
+            exit; // Ensure script stops execution after redirect
+        }else{
+            $errorMessage = "<div class='message'><p>Wrong Username or Password</p></div><br>";
+            $errorMessage .= "<a href='index.php'><button class='btn'>Go Back</button>";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,37 +33,9 @@
     <title>Login</title>
 </head>
 <body>
-      <div class="container">
+    <div class="container">
         <div class="box form-box">
-            <?php 
-             
-              include("php/config.php");
-              if(isset($_POST['submit'])){
-                $email = mysqli_real_escape_string($con,$_POST['email']);
-                $password = mysqli_real_escape_string($con,$_POST['password']);
-
-                $result = mysqli_query($con,"SELECT * FROM users WHERE Email='$email' AND Password='$password' ") or die("Select Error");
-                $row = mysqli_fetch_assoc($result);
-
-                if(is_array($row) && !empty($row)){
-                    $_SESSION['valid'] = $row['Email'];
-                    $_SESSION['username'] = $row['Username'];
-                    $_SESSION['age'] = $row['Age'];
-                    $_SESSION['id'] = $row['Id'];
-                }else{
-                    echo "<div class='message'>
-                      <p>Wrong Username or Password</p>
-                       </div> <br>";
-                   echo "<a href='index.php'><button class='btn'>Go Back</button>";
-         
-                }
-                if(isset($_SESSION['valid'])){
-                    header("Location: home.php");
-                }
-              }else{
-
-            
-            ?>
+            <?php if(isset($errorMessage)) echo $errorMessage; ?>
             <header>Login</header>
             <form action="" method="post">
                 <div class="field input">
@@ -54,16 +48,15 @@
                     <input type="password" name="password" id="password" autocomplete="off" required>
                 </div>
 
-                <div class="field">
-                    
-                    <input type="submit" class="btn" name="submit" value="Login" required>
+                <div class="field">   
+                    <input type="submit" class="btn" name="submit" value="Login">
                 </div>
                 <div class="links">
-                    Don't have account? <a href="register.php">Sign Up Now</a>
+                    Don't have an account? <a href="register.php">Sign Up Now</a>
                 </div>
             </form>
         </div>
-        <?php } ?>
-      </div>
+    </div>
 </body>
 </html>
+
