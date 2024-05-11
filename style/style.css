@@ -71,7 +71,8 @@ body{
     margin-bottom: 15px;
 }
 
-/********* Home *****************/
+/************ Home *****************/
+
 
 .nav{
     background: #fff;
@@ -134,4 +135,8 @@ main{
     border-radius: 5px;
     margin-bottom: 10px;
     color: red;
+
 }
+
+}
+
