@@ -1,3 +1,3 @@
 # SE
 projet module SE
-this is read me file
+this is the read me file
